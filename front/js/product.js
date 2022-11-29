@@ -1,79 +1,95 @@
-// faire une classe item
-class Item {
-  constructor (item) {
-    item && Object.assign(this, item)
-  }
-}
-// recuperartion de l'id de l'url pour le fetch de la fonction displayItem
+// recuperartion de l'id de l'url pour le fetch de la fonction displayKanap
 const params = new URL(document.location).searchParams
 const id = params.get('id')
 
 // récupération des noeuds du DOM
-const itemImg = document.querySelector('.item__img')
-const idPrice = document.getElementById('price')
-const idDescription = document.getElementById('description')
-const idTitle = document.getElementById('title')
+const kanapImg = document.querySelector('.item__img')
+const kanapPrice = document.getElementById('price')
+const kanapDescription = document.getElementById('description')
+const kanapName = document.getElementById('title')
 const optionColor = document.getElementById('colors')
-const inputQuantity = document.getElementById('quantity')
+// const inputQuantity = document.getElementById('quantity')
 
 // une fonction pour recupérer les données de l'API et les afficher
-const displayItem = () => {
+const displayKanap = () => {
   fetch(`http://localhost:3000/api/products/${id}`)
-    .then((data) => data.json())
-    .then((jsonItem) => {
-      const item = new Item(jsonItem)
-      console.log(item)
-      itemImg.innerHTML += `<img src="${item.imageUrl}" alt="${item.altTxt}">`
-      idTitle.innerHTML += `${item.name}`
-      idDescription.innerHTML += `${item.description}`
-      // const totalPrice = item.price * inputQuantity
-      // idPrice.innerHTML += `${totalPrice}`
-      idPrice.innerHTML += `${item.price} `
-      for (let i = 0; i < item.colors.length; i++) {
-        optionColor.innerHTML += `<option value="${item.colors[i]}">${item.colors[i]}</option>`
-      }
+    .then(data => data.json())
+    .then(jsonKanap => {
+      kanapImg.innerHTML = `<img src="${jsonKanap.imageUrl}" alt="${jsonKanap.altTxt}">`
+      kanapName.innerHTML = `${jsonKanap.name}`
+      kanapDescription.innerHTML = `${jsonKanap.description}`
+      kanapPrice.innerHTML = `${jsonKanap.price}`
+      let options = ''
+      jsonKanap.colors.forEach(
+        color => (options += `<option value="${color}">${color}</option>`))
+      optionColor.innerHTML += options
     })
 }
+// tester que l'"input" et l'"option" sont bien enregistrer
+// une fonction pour ecouter et recuperer les données utilisateurs dans un objet 'userData'
+const userData = {}
+const dataInput = () => {
+  // userData = {}
+  userData.id = id
+  document.getElementById('quantity').addEventListener('input', e => {
+    const quantitySelected = e.target.value
+    userData.quantity = quantitySelected
+    userData.color = optionColor.value
+    return userData.quantity + userData.color
+  }, false)
+  console.log(userData)
+  return userData.quantity + userData.color
+}
+dataInput()
+console.log(userData)
 
-// tester que l'"input" est bien enregistrer dans le localStorage
 // tester que le bouton ajoute le produit avec la bonne option et le bon nombre d'article dans le panier
-
-// faire une classe produit
-class Product {
-  constructor (id, color, quantity) {
-    this.id = id
-    this.color = color
-    this.quantity = quantity
-   }
-}
 // une fonction pour gerer addToCart en envoyant dans le LS les données utilisateurs
-const addToCart = () => {
-  let productArray = []
-  const colorChoice = document.querySelector('option')
-  
-  const addToCartButton = document.getElementById('addToCart')
-  addToCartButton.addEventListener('click', () => {
-    if (inputQuantity.value > 0 && inputQuantity.value < 100 && colorChoice.value !== null) {
-      const product = {
-        dataId: id,
-        color: colorChoice.value,
-        quantity: parseFloat(inputQuantity.value)
-      }
-      if (localStorage.getItem(product) !== null) {
-        productArray = JSON.parse(localStorage.getItem('product'))
-      } else {
-        productArray.push(product)
-        localStorage.setItem('product', JSON.stringify(productArray))
-      }
-    } else {
-      alert("ceci n'est pas un nombre compris entre 1 et 100")
-    }
-  })
-}
+// const addToCart = () => {
+//   let kanapsArray = []
+//   // recuperation de la couleur selectionné
+
+//   /*
+//   const colorChoice = document.querySelector('option')
+//   document.addEventListener('DOMContentLoaded', function () {
+//     document.querySelector('select[name="color-select"]').onchange = changeEventHandler
+//   }, false)
+//   function changeEventHandler (event) {
+//     if (!event.target.value) alert('Veuillez choisir une couleur SVP')
+//     else colorChoice = event.target.value
+//   }
+//   */
+
+//   // au click sur le bouton récuperer les données utilisateurs
+//   const addToCartButton = document.querySelector('button')
+//   addToCartButton.addEventListener('click', () => {
+//     const colorSelected = document.getElementById('colors').value
+//     if (
+//       inputQuantity.value > 0 &&
+//       inputQuantity.value < 100 &&
+//       colorSelected !== null
+//     ) {
+//       const product = {
+//         dataId: id,
+//         color: colorSelected,
+//         quantity: parseFloat(inputQuantity.value)
+//       }
+//       if (localStorage.getItem(product) !== null) {
+//         kanapsArray = JSON.parse(localStorage.getItem('product'))
+//       } else {
+//         kanapsArray.push(product)
+//         localStorage.setItem('product', JSON.stringify(kanapsArray))
+//       }
+//     } else {
+//       alert("ceci n'est pas un nombre compris entre 1 et 100")
+//     }
+//   })
+// }
 
 const main = () => {
-  displayItem()
-  addToCart()
+  displayKanap()
+  dataInput()
+  // addToCart()
 }
 
 main()
