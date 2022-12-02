@@ -27,43 +27,44 @@ const displayKanap = () => {
 }
 // tester que l'"input" et l'"option" sont bien enregistrer
 // une fonction pour ecouter et recuperer les données utilisateurs dans un objet 'userData'
-const userData = {}
-const getUserData = () => {
-  userData.id = id
+const userSelection = {}
+const getUserSelection = () => {
+  userSelection.id = id
+  document.getElementById('colors').addEventListener('option', f => {
+    const colorSelected = f.target.value
+    userSelection.color = colorSelected
+  })
   document.getElementById('quantity').addEventListener('input', e => {
+    // const colorSelected = document.getElementById('colors').value
+    // userSelection.color = colorSelected
     const quantitySelected = e.target.value
-    userData.quantity = quantitySelected
-    return userData.quantity
+    userSelection.quantity = quantitySelected
   }, false)
-  document.querySelector('option').addEventListener('value', e => {
-    const colorSelected = e.target.value
-    userData.color = colorSelected
-    return userData.color
-  }, false)
-  // const colorSelected = document.querySelector('option').value
-  // userData.color = colorSelected
-  // return userData.quantity + userData.color
 }
 
 // une fonction pour gerer addToCart en envoyant dans le LS les données utilisateurs
-getUserData()
 const addToCart = () => {
+  getUserSelection()
   let kanapsArray = []
   const addToCartButton = document.querySelector('button')
   addToCartButton.addEventListener('click', () => {
+    // if (userSelection.color === "") {
+    //   alert('veuillez choisir une couleur SVP')
+    // }
     if (
-      userData.quantity > 0 &&
-      userData.quantity < 100 &&
-      userData.color !== null
+      userSelection.quantity > 0 &&
+      userSelection.quantity < 100
     ) {
-      if (localStorage.getItem(userData) !== null) {
+      if (localStorage.getItem(userSelection) !== null) {
         kanapsArray = JSON.parse(localStorage.getItem('userData'))
       } else {
-        kanapsArray.push(userData)
+        kanapsArray.push(userSelection)
         localStorage.setItem('userData', JSON.stringify(kanapsArray))
       }
     } else {
-      alert("Veuillez renseigner une couleur ou un nombre d'article compris entre un et 100")
+      alert(
+        "Veuillez choisir un nombre d'article compris entre un et 100 SVP"
+      )
     }
   })
 }
