@@ -30,36 +30,33 @@ const displayKanap = () => {
 const userSelection = {}
 const getUserSelection = () => {
   userSelection.id = id
-  document.getElementById('colors').addEventListener('option', f => {
-    const colorSelected = f.target.value
+  optionColor.addEventListener('change', event => {
+    const colorSelected = event.target.value
     userSelection.color = colorSelected
   })
-  document.getElementById('quantity').addEventListener('input', e => {
-    // const colorSelected = document.getElementById('colors').value
-    // userSelection.color = colorSelected
+  document.getElementById('quantity').addEventListener('input', (e) => {
     const quantitySelected = e.target.value
     userSelection.quantity = quantitySelected
-  }, false)
+  })
 }
 
 // une fonction pour gerer addToCart en envoyant dans le LS les données utilisateurs
 const addToCart = () => {
   getUserSelection()
-  let kanapsArray = []
+  let basketArray = []
   const addToCartButton = document.querySelector('button')
   addToCartButton.addEventListener('click', () => {
-    // if (userSelection.color === "") {
-    //   alert('veuillez choisir une couleur SVP')
-    // }
-    if (
+    if (userSelection.color == null) {
+      alert('veuillez choisir une couleur SVP')
+    } else if (
       userSelection.quantity > 0 &&
       userSelection.quantity < 100
     ) {
-      if (localStorage.getItem(userSelection) !== null) {
-        kanapsArray = JSON.parse(localStorage.getItem('userData'))
+      if (localStorage.getItem(basketArray) !== null) {
+        basketArray = JSON.parse(localStorage.getItem('basket'))
       } else {
-        kanapsArray.push(userSelection)
-        localStorage.setItem('userData', JSON.stringify(kanapsArray))
+        basketArray.push(userSelection)
+        localStorage.setItem('basket', JSON.stringify(basketArray))
       }
     } else {
       alert(
