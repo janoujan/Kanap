@@ -1,3 +1,6 @@
+// creation d'un objet basket pour recuperer les methodes de basketManager.js
+const basket = new Basket()
+
 // recuperartion de l'id de l'url pour le fetch de la fonction displayKanap
 const params = new URL(document.location).searchParams
 const id = params.get('id')
@@ -36,32 +39,25 @@ const getUserSelection = () => {
   })
   document.getElementById('quantity').addEventListener('input', (e) => {
     const quantitySelected = e.target.value
-    userSelection.quantity = quantitySelected
+    userSelection.quantity = parseFloat(quantitySelected)
   })
 }
 
 // une fonction pour gerer addToCart en envoyant dans le LS les données utilisateurs
+
 const addToCart = () => {
   getUserSelection()
-  let basketArray = []
   const addToCartButton = document.querySelector('button')
   addToCartButton.addEventListener('click', () => {
     if (userSelection.color == null) {
-      alert('veuillez choisir une couleur SVP')
-    } else if (
-      userSelection.quantity > 0 &&
-      userSelection.quantity < 100
-    ) {
-      if (localStorage.getItem(basketArray) !== null) {
-        basketArray = JSON.parse(localStorage.getItem('basket'))
-      } else {
-        basketArray.push(userSelection)
-        localStorage.setItem('basket', JSON.stringify(basketArray))
-      }
+      alert('Veuillez saisir une couleur SVP')
+      // à faire changer la couleur d'ombre du bouton
+    } else if (userSelection.quantity == null || userSelection.quantity <= 0 || userSelection.quantity > 100) {
+      alert("Veuillez saisir un nombre d'article valide SVP")
+      // à faire changer la couleur du bouton
     } else {
-      alert(
-        "Veuillez choisir un nombre d'article compris entre un et 100 SVP"
-      )
+      basket.add(userSelection)
+      window.location.assign('cart.html')
     }
   })
 }
