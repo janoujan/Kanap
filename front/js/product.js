@@ -1,5 +1,6 @@
+import { Cart } from './cartManager.js'
 // creation d'un objet basket pour recuperer les methodes de basketManager.js
-const basket = new Basket()
+const currentBasket = new Cart()
 
 // recuperartion de l'id de l'url pour le fetch de la fonction displayKanap
 const params = new URL(document.location).searchParams
@@ -23,12 +24,17 @@ const displayKanap = () => {
       kanapDescription.innerHTML = `${jsonKanap.description}`
       kanapPrice.innerHTML = `${jsonKanap.price}`
       let options = ''
+      const productImage = `${jsonKanap.imageUrl}`
+      userSelection.image = productImage
+      const productName = `${jsonKanap.name}`
+      userSelection.name = productName
+      const productPrice = `${jsonKanap.price}`
+      userSelection.price = productPrice
       jsonKanap.colors.forEach(
         color => (options += `<option value="${color}">${color}</option>`))
       optionColor.innerHTML += options
     })
 }
-// tester que l'"input" et l'"option" sont bien enregistrer
 // une fonction pour ecouter et recuperer les données utilisateurs dans un objet 'userData'
 const userSelection = {}
 const getUserSelection = () => {
@@ -44,19 +50,16 @@ const getUserSelection = () => {
 }
 
 // une fonction pour gerer addToCart en envoyant dans le LS les données utilisateurs
-
 const addToCart = () => {
   getUserSelection()
   const addToCartButton = document.querySelector('button')
   addToCartButton.addEventListener('click', () => {
     if (userSelection.color == null) {
       alert('Veuillez saisir une couleur SVP')
-      // à faire changer la couleur d'ombre du bouton
     } else if (userSelection.quantity == null || userSelection.quantity <= 0 || userSelection.quantity > 100) {
       alert("Veuillez saisir un nombre d'article valide SVP")
-      // à faire changer la couleur du bouton
     } else {
-      basket.add(userSelection)
+      currentBasket.add(userSelection)
       window.location.assign('cart.html')
     }
   })
