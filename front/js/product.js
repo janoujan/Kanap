@@ -1,6 +1,6 @@
 import { Cart } from './cartManager.js'
-// creation d'un objet basket pour recuperer les methodes de basketManager.js
-const currentBasket = new Cart()
+// creation d'un objet Cart pour recuperer les methodes de cartManager.js
+const cartManager = new Cart()
 
 // recuperartion de l'id de l'url pour le fetch de la fonction displayKanap
 const params = new URL(document.location).searchParams
@@ -12,7 +12,6 @@ const kanapPrice = document.getElementById('price')
 const kanapDescription = document.getElementById('description')
 const kanapName = document.getElementById('title')
 const optionColor = document.getElementById('colors')
-// const inputQuantity = document.getElementById('quantity')
 
 // une fonction pour recupérer les données de l'API et les afficher
 const displayKanap = () => {
@@ -35,7 +34,7 @@ const displayKanap = () => {
       optionColor.innerHTML += options
     })
 }
-// une fonction pour ecouter et recuperer les données utilisateurs dans un objet 'userData'
+// une fonction pour ecouter et recuperer les données utilisateurs dans un objet 'userSelection'
 const userSelection = {}
 const getUserSelection = () => {
   userSelection.id = id
@@ -59,7 +58,7 @@ const addToCart = () => {
     } else if (userSelection.quantity == null || userSelection.quantity <= 0 || userSelection.quantity > 100) {
       alert("Veuillez saisir un nombre d'article valide SVP")
     } else {
-      currentBasket.add(userSelection)
+      cartManager.addToLocalStorage(userSelection)
       window.location.assign('cart.html')
     }
   })
