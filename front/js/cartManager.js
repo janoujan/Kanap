@@ -10,7 +10,12 @@ export class Cart {
   }
 
   getCartFromLocalStorage () {
-    return JSON.parse(localStorage.getItem('cart'))
+    const cart = localStorage.getItem('cart')
+    if (cart === null) {
+      return []
+    } else {
+      return JSON.parse(cart)
+    }
   }
 
   saveToLocalStorage (cart) {
@@ -19,39 +24,47 @@ export class Cart {
 
   /**
  * ajoute un produit dans le panier ou augmente sa quantité si il existe deja
- * @param {product} product l'objet du produit à ajouter doit avoir une id: une color: et une quantity: à minima
+ * @param {product} product l'objet du produit à ajouter doit avoir une id: une color: et une quantity: pour fonctionner
  */
   addToLocalStorage (product) {
-    const foundItem = this.cart.find(p => p.id === product.id && p.color === product.color)
+    const cart = this.getCartFromLocalStorage()
+    console.log(this.cart)
+    const foundItem = cart.find(p => p.id === product.id && p.color === product.color)
     console.log(foundItem)
-    if (foundItem !== undefined) {
+    if (foundItem != null) {
       foundItem.quantity += product.quantity
       if (product.quantity > 100) {
         product.quantity = 100
       }
     } else {
-      this.cart.push(product)
+      cart.push(product)
     }
-    this.saveToLocalStorage(this.cart)
+    this.saveToLocalStorage(cart)
   }
 
-  removeFromLocalStotage (product) {
-    const cart = this.cart.filter(p => p.id !== product.id)
+  /**
+ * une fonction pour supprimer un produit du panier
+ * @param {product} product l'objet du produit à supprimer doit avoir une id: et une color: pour fonctionner
+ */
+  removeFromLocalStorage (product) {
+    let cart = this.getCartFromLocalStorage()
+    const itemToDelete = cart.find(p => p.id === product.id && p.color === product.color)
+    cart = cart.filter(p => p !== itemToDelete)
     this.saveToLocalStorage(cart)
   }
 
   /**
  * change la quantite d'un produit dans le panier ou le supprimme si sa quantite <= 0
- * @param {product} product l'objet produit à ajouter doit avoir une id: une color: et une quantity: à minima
+ * @param {product} product l'objet produit à ajouter doit avoir une id: une color: et une quantity: pour fonctionner
  */
   changeQuantity (product) {
-    let cart = this.getCartFromLocalStorage()
-    const foundItem = cart.find(p => p.id === product.id && p.color === product.color)
+    this.cart = this.getCartFromLocalStorage()
+    const foundItem = this.cart.find(p => p.id === product.id && p.color === product.color)
     foundItem.quantity = product.quantity
     if (foundItem.quantity <= 0) {
-      cart = cart.filter(p => p.id !== product.id || p.color !== product.color)
+      this.cart = this.cart.filter(p => p.id !== product.id || p.color !== product.color)
     }
-    this.saveToLocalStorage(cart)
+    this.saveToLocalStorage(this.cart)
   }
 
   getTotalQuantity () {

@@ -13,7 +13,7 @@ const kanapDescription = document.getElementById('description')
 const kanapName = document.getElementById('title')
 const optionColor = document.getElementById('colors')
 
-// une fonction pour recupérer les données de l'API et les afficher
+// une fonction pour recupérer les données de l'API, les afficher
 const displayKanap = () => {
   fetch(`http://localhost:3000/api/products/${id}`)
     .then(data => data.json())
