@@ -11,13 +11,7 @@ const displayTotal = () => {
 
 // une fonction pour afficher le panier
 const displayCart = () => {
-  let cart = cartManager.getCartFromLocalStorage()
-  // une condition pour gerer le cas ou le panier n'a pas été créer afin de ne pas bloquer le .forEach()
-  if (cart === null) {
-    const element = document.getElementById('cart__items')
-    element.innerHTML = '<p>Votre panier est vide</p>'
-    cart = []
-  }
+  const cart = cartManager.getCartFromLocalStorage()
   cart.forEach(item => {
     const contentToLoad = `<article class="cart__item" data-id = ${item.id} data-color = ${item.color}>
                            <div class="cart__item__img">
@@ -44,7 +38,7 @@ const displayCart = () => {
   })
 }
 
-// une fonction pour ecouter chaque input quantité et on modifie le total
+// une fonction pour ecouter chaque input quantité et modifier les totaux
 const itemQuantityListener = () => {
   document.querySelectorAll('.itemQuantity').forEach(inputQuantity => {
     inputQuantity.addEventListener('change', (e) => {
@@ -75,11 +69,36 @@ const deleteItemListener = () => {
     })
   }
 }
+// une fonction pour ecrire des messages d'erreurs
+const errorMessage = (input) => {
+  input
+}
+// une fonction pour verifier, valider et poster les données du formulaire 
+const formCheckValidity = () => {
+document.querySelector('.cart__order__form__submit').addEventListener('click', (e) => {
+    e.preventDefault()
+    let formInputs = document.querySelectorAll('.cart__order__form__question')
+    let valid = true
+    for (const input of formInputs) {
+      valid &= errorMessage(input)
+      if(!valid){
+        break
+      }
+    }
+    if (valid) {
+      console.log('formulaire OK');
+    }
+  })
+}
 
-displayCart()
-displayTotal()
-itemQuantityListener()
-deleteItemListener()
+const main = () => {
+  displayCart()
+  displayTotal()
+  itemQuantityListener()
+  deleteItemListener()
+  formCheckValidity()
+}
+main()
 
 // tester que le panier se met a jour quand on modifie la quantité
 
