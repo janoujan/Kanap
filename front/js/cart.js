@@ -69,28 +69,44 @@ const deleteItemListener = () => {
     })
   }
 }
-// une fonction pour ecrire des messages d'erreurs
-const errorMessage = (input) => {
-  input
+// une fonction pour les expressions régulières
+function useRegex(input) {
+  const regex = /[a-zA-Z]+-[a-zA-Z]+éèàù\^¨/i
+  return regex.test(input)
 }
+
 // une fonction pour verifier, valider et poster les données du formulaire 
 const formCheckValidity = () => {
-document.querySelector('.cart__order__form__submit').addEventListener('click', (e) => {
+  document.querySelector('.cart__order__form__submit').addEventListener('click', (e) => {
     e.preventDefault()
-    let formInputs = document.querySelectorAll('.cart__order__form__question')
-    let valid = true
-    for (const input of formInputs) {
-      valid &= errorMessage(input)
-      if(!valid){
-        break
-      }
+    document.querySelector('input[id="firstName"]').setAttribute('pattern', '/[a-zA-Z]+-[a-zA-Z]+éèàù\^¨/i')
+    const firstNameValidation = document.querySelector('input[id="firstName"]').checkValidity()
+    if (firstNameValidation === false) {
+      document.querySelector('#firstNameErrorMsg').innerHTML = 'veuillez renseigner votre prénom'
+      document.querySelector('input[id="firstName"]').style.backgroundColor = '#fbbcbc'
     }
-    if (valid) {
-      console.log('formulaire OK');
+    const lastNameValidation = document.querySelector('input[id="lastName"]').checkValidity()
+    if (lastNameValidation === false) {
+      document.querySelector('#lastNameErrorMsg').innerHTML = 'veuillez renseigner votre nom'
+      document.querySelector('input[id="lastName"]').style.backgroundColor = '#fbbcbc'
+    }
+    const addressValidation = document.querySelector('input[id="address"]').checkValidity()
+    if (addressValidation === false) {
+      document.querySelector('#addressErrorMsg').innerHTML = 'veuillez renseigner votre adresse'
+      document.querySelector('input[id="address"]').style.backgroundColor = '#fbbcbc'
+    }
+    const cityValidation = document.querySelector('input[id="city"]').checkValidity()
+    if (cityValidation === false) {
+      document.querySelector('#cityErrorMsg').innerHTML = 'veuillez renseigner votre ville'
+      document.querySelector('input[id="city"]').style.backgroundColor = '#fbbcbc'
+    }
+    const emailValidation = document.querySelector('input[id="email"]').checkValidity()
+    if (emailValidation === false) {
+      document.querySelector('#emailErrorMsg').innerHTML = 'veuillez renseigner votre email'
+      document.querySelector('input[id="email"]').style.backgroundColor = '#fbbcbc'
     }
   })
 }
-
 const main = () => {
   displayCart()
   displayTotal()
