@@ -69,41 +69,112 @@ const deleteItemListener = () => {
     })
   }
 }
-// une fonction pour les expressions régulières
-function useRegex(input) {
-  const regex = /[a-zA-Z]+-[a-zA-Z]+éèàù\^¨/i
-  return regex.test(input)
+
+ // une fonction pour ecouter et verifier les inputs du formulaire
+const verifyFormInput = () => {
+  const firstName = document.getElementById('firstName')
+  firstName.setAttribute('pattern', '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\s-]{1,31}$')
+  firstName.addEventListener('change', (e) => {
+    const firstNameValidity = e.target.checkValidity()
+    console.log(firstNameValidity)
+    if (firstNameValidity === false) {
+      // firstName.setCustomValidity('il ne doit pas y avoir de chiffres dans votre nom')
+      document.querySelector('#firstNameErrorMsg').innerHTML = 'pas de chiffres dans les prénoms SVP'
+      document.querySelector('input[id="firstName"]').style.backgroundColor = '#fbbcbc'
+    } else {
+      console.log('prenom ok')
+      document.querySelector('#firstNameErrorMsg').innerHTML = ''
+      firstName.style.backgroundColor = '#fff'
+    }
+  })
+  const lastName = document.getElementById('lastName')
+  lastName.setAttribute('pattern', '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\s-]{1,31}$')
+  lastName.addEventListener('change', (e) => {
+    const lastNameValidity = e.target.checkValidity()
+    if (lastNameValidity === false) {
+      document.querySelector('#lastNameErrorMsg').innerHTML = 'il ne doit pas y avoir de chiffres dans votre nom'
+      lastName.style.backgroundColor = '#fbbcbc'
+    } else {
+      console.log('nom ok')
+      document.getElementById('lastNameErrorMsg').innerHTML = ''
+      lastName.style.backgroundColor = '#fff'
+    }
+  })
+  const address = document.getElementById('address')
+  address.addEventListener('change', (e) => {
+    const addressValidity = e.target.checkValidity()
+    if (addressValidity === false) {
+      document.querySelector('#addressErrorMsg').innerHTML = 'veuillez renseigner votre adresse'
+      address.style.backgroundColor = '#fbbcbc'
+    } else {
+      console.log('addresse ok')
+      document.querySelector('#addressErrorMsg').innerHTML = ''
+      address.style.backgroundColor = '#fff'
+    }
+  })
+  const city = document.getElementById('city')
+  city.setAttribute('pattern', '^([a-zA-Zéèêàôîûäëïùüöçœæ\-])*$')
+  city.addEventListener('change', (e) => {
+    const cityValidity = e.target.checkValidity()
+    if (cityValidity === false) {
+      document.querySelector('#cityErrorMsg').innerHTML = 'pas de chiffres dans le nom de ville SVP'
+      city.style.backgroundColor = '#fbbcbc'
+    } else {
+      console.log('ville ok')
+      document.getElementById('cityErrorMsg').innerHTML = ''
+      city.style.backgroundColor = '#ffff'
+    }
+  })
+  const email = document.getElementById('email')
+  email.setAttribute('pattern', '(.*)@(.*)')
+  email.addEventListener('change', (e) => {
+    const emailValidity = e.target.checkValidity()
+    if (emailValidity === false) {
+      document.querySelector('#emailErrorMsg').innerHTML = 'il manque un @ dans votre email'
+      email.style.backgroundColor = '#fbbcbc'
+    } else {
+      console.log('email ok')
+      document.getElementById('emailErrorMsg').innerHTML = ''
+      email.style.backgroundColor = '#ffff'
+    }
+  })
 }
 
-// une fonction pour verifier, valider et poster les données du formulaire 
+// une fonction pour recuperer le id des produits du panier pour le POST
+const getProductIdFromCart = () => {
+  const productIdList = cartManager.getCartFromLocalStorage()
+  if (productIdList.length > 0) {
+    return productIdList.map(item => item.id)
+  } else {
+    []
+  }
+}
+
+// une fonction pour valider et poster les données du formulaire
 const formCheckValidity = () => {
-  document.querySelector('.cart__order__form__submit').addEventListener('click', (e) => {
+  document.querySelector('.cart__order__form__submit').addEventListener('click', e => {
     e.preventDefault()
-    document.querySelector('input[id="firstName"]').setAttribute('pattern', '/[a-zA-Z]+-[a-zA-Z]+éèàù\^¨/i')
-    const firstNameValidation = document.querySelector('input[id="firstName"]').checkValidity()
-    if (firstNameValidation === false) {
-      document.querySelector('#firstNameErrorMsg').innerHTML = 'veuillez renseigner votre prénom'
-      document.querySelector('input[id="firstName"]').style.backgroundColor = '#fbbcbc'
-    }
-    const lastNameValidation = document.querySelector('input[id="lastName"]').checkValidity()
-    if (lastNameValidation === false) {
-      document.querySelector('#lastNameErrorMsg').innerHTML = 'veuillez renseigner votre nom'
-      document.querySelector('input[id="lastName"]').style.backgroundColor = '#fbbcbc'
-    }
-    const addressValidation = document.querySelector('input[id="address"]').checkValidity()
-    if (addressValidation === false) {
-      document.querySelector('#addressErrorMsg').innerHTML = 'veuillez renseigner votre adresse'
-      document.querySelector('input[id="address"]').style.backgroundColor = '#fbbcbc'
-    }
-    const cityValidation = document.querySelector('input[id="city"]').checkValidity()
-    if (cityValidation === false) {
-      document.querySelector('#cityErrorMsg').innerHTML = 'veuillez renseigner votre ville'
-      document.querySelector('input[id="city"]').style.backgroundColor = '#fbbcbc'
-    }
-    const emailValidation = document.querySelector('input[id="email"]').checkValidity()
-    if (emailValidation === false) {
-      document.querySelector('#emailErrorMsg').innerHTML = 'veuillez renseigner votre email'
-      document.querySelector('input[id="email"]').style.backgroundColor = '#fbbcbc'
+    const valid = document.querySelector('.cart__order__form').reportValidity()
+    if (valid) {
+      console.log('formulaire ok')
+      const result = fetch('http://localhost:3000/api/products/order', {
+        method: 'POST',
+        headers: {
+          // accept: 'application/json',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          contact: {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            address: document.getElementById('address').value,
+            city: document.getElementById('city').value,
+            email: document.getElementById('email').value
+          },
+          products: getProductIdFromCart()
+        })
+      })
+      console.log(result)
     }
   })
 }
@@ -112,6 +183,7 @@ const main = () => {
   displayTotal()
   itemQuantityListener()
   deleteItemListener()
+  verifyFormInput()
   formCheckValidity()
 }
 main()
