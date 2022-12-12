@@ -72,62 +72,41 @@ const deleteItemListener = () => {
 
 // une fonction pour ecouter et verifier les inputs du formulaire
 const verifyFormInput = () => {
-  const regexpInputName = '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\\-\\s]{1,31}$'
-  const firstName = document.getElementById('firstName')
-  firstName.setAttribute('pattern', regexpInputName)
-  firstName.addEventListener('input', (e) => {
-    if (e.target.checkValidity() === false) {
-      document.querySelector('#firstNameErrorMsg').innerHTML = 'pas de chiffres dans les prénoms SVP'
-      document.querySelector('input[id="firstName"]').style.backgroundColor = '#fbbcbc'
-    } else {
-      console.log('prenom ok')
-      document.querySelector('#firstNameErrorMsg').innerHTML = ''
-      firstName.style.backgroundColor = '#fff'
-    }
+  const regexNoNumbers = '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\\-\\s]{1,31}$'
+  const regexAddress = '^.{5,120}$'
+  const regexEmail = '^[a-z0-9._-]+@[a-z0-9._-]{2,}\\.[a-z]{2,7}$'
+  // une boucle pour gerer les inputs ou les chiffres sont interdits
+  const inputsNoNumbers = [document.getElementById('firstName'), document.getElementById('lastName'), document.getElementById('city')]
+  inputsNoNumbers.forEach(currentInput => {
+    currentInput.setAttribute('pattern', regexNoNumbers)
+    const id = currentInput.getAttribute('id')
+    currentInput.addEventListener('input', (e) => {
+      if (e.target.checkValidity() === false) {
+        document.querySelector(`#${id}ErrorMsg`).innerHTML = 'les chiffres ne sont pas accepté'
+        currentInput.style.backgroundColor = '#fbbcbc'
+      } else {
+        document.querySelector(`#${id}ErrorMsg`).innerHTML = ''
+        currentInput.style.backgroundColor = '#fff'
+      }
+    })
   })
-  const lastName = document.getElementById('lastName')
-  lastName.setAttribute('pattern', regexpInputName)
-  lastName.addEventListener('change', (e) => {
-    const lastNameValidity = e.target.checkValidity()
-    if (lastNameValidity === false) {
-      document.querySelector('#lastNameErrorMsg').innerHTML = 'il ne doit pas y avoir de chiffres dans votre nom'
-      lastName.style.backgroundColor = '#fbbcbc'
-    } else {
-      console.log('nom ok')
-      document.getElementById('lastNameErrorMsg').innerHTML = ''
-      lastName.style.backgroundColor = '#fff'
-    }
-  })
+  // maintenant on gere les autres inputs
   const address = document.getElementById('address')
-  address.addEventListener('change', (e) => {
-    const addressValidity = e.target.checkValidity()
-    if (addressValidity === false) {
-      document.querySelector('#addressErrorMsg').innerHTML = 'veuillez renseigner votre adresse'
+  address.setAttribute('pattern', regexAddress)
+  address.addEventListener('input', (e) => {
+    if (e.target.checkValidity() === false) {
+      document.querySelector('#addressErrorMsg').innerHTML = 'trop court pour une adresse'
       address.style.backgroundColor = '#fbbcbc'
     } else {
-      console.log('addresse ok')
       document.querySelector('#addressErrorMsg').innerHTML = ''
       address.style.backgroundColor = '#fff'
     }
   })
-  const city = document.getElementById('city')
-  city.setAttribute('pattern', regexpInputName)
-  city.addEventListener('change', (e) => {
-    const cityValidity = e.target.checkValidity()
-    if (cityValidity === false) {
-      document.querySelector('#cityErrorMsg').innerHTML = 'pas de chiffres dans le nom de ville SVP'
-      city.style.backgroundColor = '#fbbcbc'
-    } else {
-      document.getElementById('cityErrorMsg').innerHTML = ''
-      city.style.backgroundColor = '#ffff'
-    }
-  })
   const email = document.getElementById('email')
-  email.setAttribute('pattern', '(.*)@(.*)')
-  email.addEventListener('change', (e) => {
-    const emailValidity = e.target.checkValidity()
-    if (emailValidity === false) {
-      document.querySelector('#emailErrorMsg').innerHTML = 'il manque un @ dans votre email'
+  email.setAttribute('pattern', regexEmail)
+  email.addEventListener('input', (e) => {
+    if (e.target.checkValidity() === false) {
+      document.querySelector('#emailErrorMsg').innerHTML = 'il manque des caractères dans votre email'
       email.style.backgroundColor = '#fbbcbc'
     } else {
       document.getElementById('emailErrorMsg').innerHTML = ''
@@ -139,11 +118,7 @@ const verifyFormInput = () => {
 // une fonction pour recuperer le id des produits du panier pour le POST
 const getProductIdFromCart = () => {
   const productIdList = cartManager.getCartFromLocalStorage()
-  if (productIdList.length > 0) {
-    return productIdList.map(item => item.id)
-  } else {
-    return []
-  }
+  return (productIdList.length > 0) ? productIdList.map(item => item.id) : []
 }
 
 // une fonction pour valider et poster les données du formulaire
