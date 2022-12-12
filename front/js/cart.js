@@ -147,7 +147,7 @@ const getProductIdFromCart = () => {
 }
 
 // une fonction pour valider et poster les données du formulaire
-const formCheckValidity = () => {
+const formCheckAndPost = () => {
   document.querySelector('.cart__order__form__submit').addEventListener('click', e => {
     e.preventDefault()
     const valid = document.querySelector('.cart__order__form').reportValidity()
@@ -181,7 +181,7 @@ const main = () => {
   itemQuantityListener()
   deleteItemListener()
   verifyFormInput()
-  formCheckValidity()
+  formCheckAndPost()
 }
 main()
 
