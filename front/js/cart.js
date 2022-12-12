@@ -70,15 +70,13 @@ const deleteItemListener = () => {
   }
 }
 
- // une fonction pour ecouter et verifier les inputs du formulaire
+// une fonction pour ecouter et verifier les inputs du formulaire
 const verifyFormInput = () => {
+  const regexpInputName = '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\\-\\s]{1,31}$'
   const firstName = document.getElementById('firstName')
-  firstName.setAttribute('pattern', '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\s-]{1,31}$')
-  firstName.addEventListener('change', (e) => {
-    const firstNameValidity = e.target.checkValidity()
-    console.log(firstNameValidity)
-    if (firstNameValidity === false) {
-      // firstName.setCustomValidity('il ne doit pas y avoir de chiffres dans votre nom')
+  firstName.setAttribute('pattern', regexpInputName)
+  firstName.addEventListener('input', (e) => {
+    if (e.target.checkValidity() === false) {
       document.querySelector('#firstNameErrorMsg').innerHTML = 'pas de chiffres dans les prénoms SVP'
       document.querySelector('input[id="firstName"]').style.backgroundColor = '#fbbcbc'
     } else {
@@ -88,7 +86,7 @@ const verifyFormInput = () => {
     }
   })
   const lastName = document.getElementById('lastName')
-  lastName.setAttribute('pattern', '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\s-]{1,31}$')
+  lastName.setAttribute('pattern', regexpInputName)
   lastName.addEventListener('change', (e) => {
     const lastNameValidity = e.target.checkValidity()
     if (lastNameValidity === false) {
@@ -113,14 +111,13 @@ const verifyFormInput = () => {
     }
   })
   const city = document.getElementById('city')
-  city.setAttribute('pattern', '^([a-zA-Zéèêàôîûäëïùüöçœæ\-])*$')
+  city.setAttribute('pattern', regexpInputName)
   city.addEventListener('change', (e) => {
     const cityValidity = e.target.checkValidity()
     if (cityValidity === false) {
       document.querySelector('#cityErrorMsg').innerHTML = 'pas de chiffres dans le nom de ville SVP'
       city.style.backgroundColor = '#fbbcbc'
     } else {
-      console.log('ville ok')
       document.getElementById('cityErrorMsg').innerHTML = ''
       city.style.backgroundColor = '#ffff'
     }
@@ -133,7 +130,6 @@ const verifyFormInput = () => {
       document.querySelector('#emailErrorMsg').innerHTML = 'il manque un @ dans votre email'
       email.style.backgroundColor = '#fbbcbc'
     } else {
-      console.log('email ok')
       document.getElementById('emailErrorMsg').innerHTML = ''
       email.style.backgroundColor = '#ffff'
     }
@@ -146,7 +142,7 @@ const getProductIdFromCart = () => {
   if (productIdList.length > 0) {
     return productIdList.map(item => item.id)
   } else {
-    []
+    return []
   }
 }
 
@@ -156,13 +152,9 @@ const formCheckValidity = () => {
     e.preventDefault()
     const valid = document.querySelector('.cart__order__form').reportValidity()
     if (valid) {
-      console.log('formulaire ok')
-      const result = fetch('http://localhost:3000/api/products/order', {
+      fetch('http://localhost:3000/api/products/order', {
         method: 'POST',
-        headers: {
-          // accept: 'application/json',
-          'content-type': 'application/json'
-        },
+        headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           contact: {
             firstName: document.getElementById('firstName').value,
@@ -174,10 +166,15 @@ const formCheckValidity = () => {
           products: getProductIdFromCart()
         })
       })
-      console.log(result)
+        .then(res => res.json())
+        .then(data => {
+          window.location.href = `confirmation.html?orderId=${data.orderId}`
+          window.localStorage.clear()
+        })
     }
   })
 }
+
 const main = () => {
   displayCart()
   displayTotal()
