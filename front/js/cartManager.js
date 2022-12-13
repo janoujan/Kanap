@@ -1,4 +1,5 @@
 
+// création de la classe Cart
 export class Cart {
   constructor () {
     const cart = localStorage.getItem('cart')
@@ -9,6 +10,7 @@ export class Cart {
     }
   }
 
+  // récupération du panier depuis le LS
   getCartFromLocalStorage () {
     const cart = localStorage.getItem('cart')
     if (cart === null) {
@@ -18,6 +20,7 @@ export class Cart {
     }
   }
 
+  // sauve le panier dans le LS
   saveToLocalStorage (cart) {
     localStorage.setItem('cart', JSON.stringify(cart))
   }
@@ -67,6 +70,7 @@ export class Cart {
     this.saveToLocalStorage(this.cart)
   }
 
+  // renvoie la quantité total de produits
   getTotalQuantity () {
     const cart = this.getCartFromLocalStorage()
     let number = 0
@@ -76,6 +80,7 @@ export class Cart {
     return number
   }
 
+  // renvoie le prix total
   getTotalPrice () {
     const cart = this.getCartFromLocalStorage()
     let total = 0

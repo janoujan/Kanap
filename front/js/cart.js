@@ -1,9 +1,9 @@
 import { Cart } from './cartManager.js'
 
-// creation d'un tableau d'objet avec la class Cart pour pouvoir utiliser les methodes de cartManager
+// création d'un objet avec la class Cart pour pouvoir utiliser les méthodes de cartManager
 const cartManager = new Cart()
 
-// une fonction pour afficher les totaux utilisant les methodes de cartManager
+// une fonction pour afficher les totaux utilisant les méthodes de cartManager
 const displayTotal = () => {
   document.getElementById('totalQuantity').innerHTML = cartManager.getTotalQuantity()
   document.getElementById('totalPrice').innerHTML = cartManager.getTotalPrice()
@@ -38,7 +38,7 @@ const displayCart = () => {
   })
 }
 
-// une fonction pour ecouter chaque input quantité et modifier les totaux
+// une fonction pour écouter chaque input quantité et modifier les totaux
 const itemQuantityListener = () => {
   document.querySelectorAll('.itemQuantity').forEach(inputQuantity => {
     inputQuantity.addEventListener('change', (e) => {
@@ -55,7 +55,7 @@ const itemQuantityListener = () => {
   })
 }
 
-// une fonction pour ecouter chaque bouton deleteItem et retirer le produit du panier
+// une fonction pour écouter chaque bouton deleteItem et retirer le produit du panier
 const deleteItemListener = () => {
   const deleteItems = document.getElementsByClassName('deleteItem')
   for (const deleteItem of deleteItems) {
@@ -70,12 +70,12 @@ const deleteItemListener = () => {
   }
 }
 
-// une fonction pour ecouter et verifier les inputs du formulaire
+// une fonction pour écouter et vérifier les inputs du formulaire
 const verifyFormInput = () => {
   const regexNoNumbers = '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\\-\\s]{1,31}$'
   const regexAddress = '^.{5,120}$'
   const regexEmail = '^[a-z0-9._-]+@[a-z0-9._-]{2,}\\.[a-z]{2,7}$'
-  // une boucle pour gerer les inputs ou les chiffres sont interdits
+  // une boucle pour gérer les inputs où les chiffres sont interdits
   const inputsNoNumbers = [document.getElementById('firstName'), document.getElementById('lastName'), document.getElementById('city')]
   inputsNoNumbers.forEach(currentInput => {
     currentInput.setAttribute('pattern', regexNoNumbers)
@@ -90,7 +90,7 @@ const verifyFormInput = () => {
       }
     })
   })
-  // maintenant on gere les autres inputs
+  // maintenant on gère les autres inputs
   const address = document.getElementById('address')
   address.setAttribute('pattern', regexAddress)
   address.addEventListener('input', (e) => {
@@ -115,7 +115,7 @@ const verifyFormInput = () => {
   })
 }
 
-// une fonction pour recuperer le id des produits du panier pour le POST
+// une fonction pour récupérer le id des produits du panier pour le POST
 const getProductIdFromCart = () => {
   const productIdList = cartManager.getCartFromLocalStorage()
   return (productIdList.length > 0) ? productIdList.map(item => item.id) : []
@@ -161,11 +161,3 @@ const main = () => {
   formCheckAndPost()
 }
 main()
-
-// tester que le panier se met a jour quand on modifie la quantité
-
-// tester que le produit disparaissent quand on le supprime
-
-// tester et valider les donnees recolter en input
-
-// tester que le bouton envoit bien la requete post

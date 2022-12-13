@@ -1,4 +1,4 @@
-// const searchParams = new URLSearchParams(document.location)
+// affiche le numéro de commande
 const searchParams = new URL(document.location).searchParams
 const orderId = searchParams.get('orderId')
 document.getElementById('orderId').innerHTML = `${orderId}`
