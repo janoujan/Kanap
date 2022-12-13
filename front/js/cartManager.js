@@ -13,11 +13,7 @@ export class Cart {
   // récupération du panier depuis le LS
   getCartFromLocalStorage () {
     const cart = localStorage.getItem('cart')
-    if (cart === null) {
-      return []
-    } else {
-      return JSON.parse(cart)
-    }
+    return (cart === null) ? [] : JSON.parse(cart)
   }
 
   // sauve le panier dans le LS
