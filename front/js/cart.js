@@ -146,6 +146,8 @@ const formCheckAndPost = () => {
           window.location.href = `confirmation.html?orderId=${data.orderId}`
           window.localStorage.clear()
         })
+    } else {
+      alert("le formulaire de contact n'est pas valide")
     }
   })
 }

@@ -1,4 +1,4 @@
-// verifer que la boucle du fetch ajoute autant de produit que ceux dans la class Produit
+// afiche les produits de l'API
 fetch('http://localhost:3000/api/products/')
   .then(data => data.json())
   .then(jsonListProduct => {
@@ -14,5 +14,3 @@ fetch('http://localhost:3000/api/products/')
       document.querySelector('section').innerHTML += contentToAdd
     }
   })
-
-// tester qu'au click sur le produit la page du produit s'affiche

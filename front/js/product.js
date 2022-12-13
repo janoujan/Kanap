@@ -3,8 +3,8 @@ import { Cart } from './cartManager.js'
 const cartManager = new Cart()
 
 // recuperartion de l'id de l'url pour le fetch de la fonction displayKanap
-const params = new URL(document.location).searchParams
-const id = params.get('id')
+const searchParams = new URL(document.location).searchParams
+const id = searchParams.get('id')
 
 // récupération des noeuds du DOM
 const kanapImg = document.querySelector('.item__img')
@@ -13,7 +13,7 @@ const kanapDescription = document.getElementById('description')
 const kanapName = document.getElementById('title')
 const optionColor = document.getElementById('colors')
 
-// une fonction pour recupérer les données de l'API, les afficher
+// une fonction pour recupérer les données de l'API et les afficher
 const displayKanap = () => {
   fetch(`http://localhost:3000/api/products/${id}`)
     .then(data => data.json())
