@@ -4,29 +4,31 @@ import { Cart } from './cartManager.js'
 const cartManager = new Cart()
 
 // une fonction pour afficher les totaux utilisant les méthodes de cartManager
-const displayTotal = () => {
-  document.getElementById('totalQuantity').innerHTML = cartManager.getTotalQuantity()
-  document.getElementById('totalPrice').innerHTML = cartManager.getTotalPrice()
+const displayTotal = async () => {
+  document.getElementById('totalQuantity').innerHTML = await cartManager.getTotalQuantity()
+  document.getElementById('totalPrice').innerHTML = await cartManager.getTotalPrice()
 }
 
 // une fonction pour afficher le panier
-const displayCart = () => {
+const displayCart = async () => {
   const cart = cartManager.getCartFromLocalStorage()
-  cart.forEach(item => {
-    const contentToLoad = `<article class="cart__item" data-id = ${item.id} data-color = ${item.color}>
+  let contentToLoad = ''
+  for (const kanap of cart) {
+    const productPrice = await cartManager.fetchProductPrice(kanap.id)
+    contentToLoad += `<article class="cart__item" data-id=${kanap.id} data-color=${kanap.color}>
                            <div class="cart__item__img">
-                             <img src= ${item.image} alt="Photographie d'un canapé">
+                             <img src= ${kanap.image} alt="Photographie d'un canapé">
                            </div>
                            <div class="cart__item__content">
                              <div class="cart__item__content__description">
-                                          <h2>${item.name}</h2>
-                               <p>couleur : ${item.color}</p>
-                               <p>prix unitaire : ${item.price} €</p>
+                                          <h2>${kanap.name}</h2>
+                               <p>couleur : ${kanap.color}</p>
+                               <p>prix unitaire : ${productPrice} </p>
                              </div>
                              <div class="cart__item__content__settings">
                                <div class="cart__item__content__settings__quantity">
                                  <p>Qté : </p>
-                                 <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${item.quantity}">
+                                 <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${kanap.quantity}">
                                </div>
                                <div class="cart__item__content__settings__delete">
                                  <p class="deleteItem">Supprimer</p>
@@ -34,8 +36,10 @@ const displayCart = () => {
                              </div>
                             </div>
                         </article>`
-    document.querySelector('#cart__items').innerHTML += contentToLoad
-  })
+  }
+  document.querySelector('#cart__items').innerHTML = contentToLoad
+  itemQuantityListener()
+  deleteItemListener()
 }
 
 // une fonction pour écouter chaque input quantité et modifier les totaux
@@ -74,7 +78,7 @@ const deleteItemListener = () => {
 const verifyFormInput = () => {
   const regexNoNumbers = '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\\-\\s]{1,31}$'
   const regexAddress = '^.{5,120}$'
-  const regexEmail = '^[a-z0-9._-]+@[a-z0-9._-]{2,}\\.[a-z]{2,7}$'
+  const regexEmail = '^[a-z0-9._-+]+@[a-z0-9._-]{2,}\\.[a-z]{2,7}$'
   // une boucle pour gérer les inputs où les chiffres sont interdits
   const inputsNoNumbers = [document.getElementById('firstName'), document.getElementById('lastName'), document.getElementById('city')]
   inputsNoNumbers.forEach(currentInput => {
@@ -90,7 +94,7 @@ const verifyFormInput = () => {
       }
     })
   })
-  // maintenant on gère les autres inputs
+  // maintenant on gère les adresses avec regexAddress
   const address = document.getElementById('address')
   address.setAttribute('pattern', regexAddress)
   address.addEventListener('input', (e) => {
@@ -102,6 +106,7 @@ const verifyFormInput = () => {
       address.style.backgroundColor = '#fff'
     }
   })
+  // ici on gère les email avec regexEmail
   const email = document.getElementById('email')
   email.setAttribute('pattern', regexEmail)
   email.addEventListener('input', (e) => {
@@ -155,8 +160,6 @@ const formCheckAndPost = () => {
 const main = () => {
   displayCart()
   displayTotal()
-  itemQuantityListener()
-  deleteItemListener()
   verifyFormInput()
   formCheckAndPost()
 }

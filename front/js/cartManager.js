@@ -66,6 +66,22 @@ export class Cart {
     this.saveToLocalStorage(this.cart)
   }
 
+  // recupere le prix d'un produit selon son id
+  fetchProductPrice (productId) {
+    let price = fetch(`http://localhost:3000/api/products/${productId}`)
+      .then(function (response) {
+        if (response.ok) {
+          return response.json()
+        }
+      })
+      .then(function (value) {
+        price = value.price
+        return price
+      })
+      .catch(new Error('impossible de contacter le serveur'))
+    return Promise.resolve(price)
+  }
+
   // renvoie la quantité total de produits
   getTotalQuantity () {
     const cart = this.getCartFromLocalStorage()
@@ -77,11 +93,12 @@ export class Cart {
   }
 
   // renvoie le prix total
-  getTotalPrice () {
+  async getTotalPrice () {
     const cart = this.getCartFromLocalStorage()
     let total = 0
     for (const item of cart) {
-      total += item.quantity * item.price
+      const price = await this.fetchProductPrice(item.id)
+      total += item.quantity * price
     }
     return total
   }
