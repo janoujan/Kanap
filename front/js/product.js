@@ -53,7 +53,8 @@ const getUserSelection = () => {
   })
 }
 
-// une fonction pour gerer addToCart en envoyant dans le LS les données utilisateurs
+// une fonction pour gerer le bouton "ajouter au panier" en envoyant dans le LS les données utilisateurs
+// et rediriger l'utilisateur vers sa page panier
 const addToCart = () => {
   getUserSelection()
   const addToCartButton = document.querySelector('button')

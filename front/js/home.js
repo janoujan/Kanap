@@ -1,4 +1,4 @@
-// affiche les produits de l'API
+// un fetch et une boucle pour afficher les produits de l'API
 fetch('http://localhost:3000/api/products/')
   .then(data => data.json())
   .then(jsonListProduct => {

@@ -3,7 +3,7 @@ import { Cart } from './cartManager.js'
 // création d'un objet avec la class Cart pour pouvoir utiliser les méthodes de cartManager
 const cartManager = new Cart()
 
-// une fonction pour afficher les totaux utilisant les méthodes de cartManager
+// une fonction pour afficher les totaux en utilisant les méthodes de cartManager
 const displayTotal = async () => {
   document.getElementById('totalQuantity').innerHTML = await cartManager.getTotalQuantity()
   document.getElementById('totalPrice').innerHTML = await cartManager.getTotalPrice()
@@ -78,7 +78,7 @@ const deleteItemListener = () => {
 const verifyFormInput = () => {
   const regexNoNumbers = '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\\-\\s]{1,31}$'
   const regexAddress = '^.{5,120}$'
-  const regexEmail = '^[a-z0-9._-+]+@[a-z0-9._-]{2,}\\.[a-z]{2,7}$'
+  const regexEmail = '^[a-z0-9._+-/]+@[a-z0-9._-]{2,}\\.[a-z]{2,7}$'
   // une boucle pour gérer les inputs où les chiffres sont interdits
   const inputsNoNumbers = [document.getElementById('firstName'), document.getElementById('lastName'), document.getElementById('city')]
   inputsNoNumbers.forEach(currentInput => {
@@ -86,7 +86,7 @@ const verifyFormInput = () => {
     const id = currentInput.getAttribute('id')
     currentInput.addEventListener('input', (e) => {
       if (e.target.checkValidity() === false) {
-        document.querySelector(`#${id}ErrorMsg`).innerHTML = 'les chiffres ne sont pas accepté'
+        document.querySelector(`#${id}ErrorMsg`).innerHTML = 'par sécurité, vous ne pouvez entrer que des lettres'
         currentInput.style.backgroundColor = '#fbbcbc'
       } else {
         document.querySelector(`#${id}ErrorMsg`).innerHTML = ''

@@ -27,9 +27,7 @@ export class Cart {
  */
   addToLocalStorage (product) {
     const cart = this.getCartFromLocalStorage()
-    console.log(this.cart)
     const foundItem = cart.find(p => p.id === product.id && p.color === product.color)
-    console.log(foundItem)
     if (foundItem != null) {
       foundItem.quantity += product.quantity
       if (product.quantity > 100) {
@@ -66,7 +64,11 @@ export class Cart {
     this.saveToLocalStorage(this.cart)
   }
 
-  // recupere le prix d'un produit selon son id
+  /**
+   * retourne le prix d'un produit selon son Id
+   * @param {productId}  Number l'id du produit à appeler
+   * @returns Number  retourne le prix du produit appelé
+   */
   fetchProductPrice (productId) {
     let price = fetch(`http://localhost:3000/api/products/${productId}`)
       .then(function (response) {
