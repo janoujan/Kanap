@@ -14,7 +14,7 @@ const displayCart = async () => {
   const cart = cartManager.getCartFromLocalStorage()
   let contentToLoad = ''
   for (const kanap of cart) {
-    const productPrice = await cartManager.fetchProductPrice(kanap.id)
+    const kanapPrice = await cartManager.fetchKanapPrice(kanap.id)
     contentToLoad += `<article class="cart__item" data-id=${kanap.id} data-color=${kanap.color}>
                            <div class="cart__item__img">
                              <img src= ${kanap.image} alt="Photographie d'un canapé">
@@ -23,7 +23,7 @@ const displayCart = async () => {
                              <div class="cart__item__content__description">
                                           <h2>${kanap.name}</h2>
                                <p>couleur : ${kanap.color}</p>
-                               <p>prix unitaire : ${productPrice} </p>
+                               <p>prix unitaire : ${kanapPrice} </p>
                              </div>
                              <div class="cart__item__content__settings">
                                <div class="cart__item__content__settings__quantity">
@@ -61,9 +61,9 @@ const itemQuantityListener = () => {
 
 // une fonction pour écouter chaque bouton deleteItem et retirer le produit du panier
 const deleteItemListener = () => {
-  const deleteItems = document.getElementsByClassName('deleteItem')
-  for (const deleteItem of deleteItems) {
-    deleteItem.addEventListener('click', (e) => {
+  const deleteKanaps = document.getElementsByClassName('deleteItem')
+  for (const deletekanap of deleteKanaps) {
+    deletekanap.addEventListener('click', (e) => {
       cartManager.removeFromLocalStorage({
         id: e.target.closest('.cart__item').dataset.id,
         color: e.target.closest('.cart__item').dataset.color
@@ -76,13 +76,13 @@ const deleteItemListener = () => {
 
 // une fonction pour écouter et vérifier les inputs du formulaire
 const verifyFormInput = () => {
-  const regexNoNumbers = '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\\-\\s]{1,31}$'
+  const regexLettersOnly = '^[a-zA-Záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ\\-\\s]{1,31}$'
   const regexAddress = '^.{5,120}$'
   const regexEmail = '^[a-z0-9._+-/]+@[a-z0-9._-]{2,}\\.[a-z]{2,7}$'
-  // une boucle pour gérer les inputs où les chiffres sont interdits
+  // une boucle pour gérer les inputs où seul les lettres sont acceptées
   const inputsNoNumbers = [document.getElementById('firstName'), document.getElementById('lastName'), document.getElementById('city')]
   inputsNoNumbers.forEach(currentInput => {
-    currentInput.setAttribute('pattern', regexNoNumbers)
+    currentInput.setAttribute('pattern', regexLettersOnly)
     const id = currentInput.getAttribute('id')
     currentInput.addEventListener('input', (e) => {
       if (e.target.checkValidity() === false) {

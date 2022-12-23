@@ -1,7 +1,6 @@
 // affiche le numéro de commande
 const searchParams = new URLSearchParams(document.location.search)
 const orderId = searchParams.get('orderId')
-// console.log(document.location, searchParams, orderId)
 if (orderId === null) {
   document.querySelector('.confirmation').innerHTML = '<p>commande invalide</p>'
 } else {

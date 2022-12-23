@@ -27,9 +27,9 @@ export class Cart {
  */
   addToLocalStorage (product) {
     const cart = this.getCartFromLocalStorage()
-    const foundItem = cart.find(p => p.id === product.id && p.color === product.color)
-    if (foundItem != null) {
-      foundItem.quantity += product.quantity
+    const foundKanap = cart.find(kanap => kanap.id === product.id && kanap.color === product.color)
+    if (foundKanap != null) {
+      foundKanap.quantity += product.quantity
       if (product.quantity > 100) {
         product.quantity = 100
       }
@@ -45,8 +45,8 @@ export class Cart {
  */
   removeFromLocalStorage (product) {
     let cart = this.getCartFromLocalStorage()
-    const itemToDelete = cart.find(p => p.id === product.id && p.color === product.color)
-    cart = cart.filter(p => p !== itemToDelete)
+    const kanapToDelete = cart.find(kanap => kanap.id === product.id && kanap.color === product.color)
+    cart = cart.filter(p => p !== kanapToDelete)
     this.saveToLocalStorage(cart)
   }
 
@@ -56,10 +56,10 @@ export class Cart {
  */
   changeQuantity (product) {
     this.cart = this.getCartFromLocalStorage()
-    const foundItem = this.cart.find(p => p.id === product.id && p.color === product.color)
-    foundItem.quantity = product.quantity
-    if (foundItem.quantity <= 0) {
-      this.cart = this.cart.filter(p => p.id !== product.id || p.color !== product.color)
+    const foundKanap = this.cart.find(kanap => kanap.id === product.id && kanap.color === product.color)
+    foundKanap.quantity = product.quantity
+    if (foundKanap.quantity <= 0) {
+      this.cart = this.cart.filter(kanap => kanap.id !== product.id || kanap.color !== product.color)
     }
     this.saveToLocalStorage(this.cart)
   }
@@ -69,8 +69,8 @@ export class Cart {
    * @param {productId}  Number l'id du produit à appeler
    * @returns Number  retourne le prix du produit appelé
    */
-  fetchProductPrice (productId) {
-    let price = fetch(`http://localhost:3000/api/products/${productId}`)
+  fetchKanapPrice (kanapId) {
+    let price = fetch(`http://localhost:3000/api/products/${kanapId}`)
       .then(function (response) {
         if (response.ok) {
           return response.json()
@@ -88,8 +88,8 @@ export class Cart {
   getTotalQuantity () {
     const cart = this.getCartFromLocalStorage()
     let number = 0
-    for (const item of cart) {
-      number += item.quantity
+    for (const kanap of cart) {
+      number += kanap.quantity
     }
     return number
   }
@@ -98,9 +98,9 @@ export class Cart {
   async getTotalPrice () {
     const cart = this.getCartFromLocalStorage()
     let total = 0
-    for (const item of cart) {
-      const price = await this.fetchProductPrice(item.id)
-      total += item.quantity * price
+    for (const kanap of cart) {
+      const price = await this.fetchKanapPrice(kanap.id)
+      total += kanap.quantity * price
     }
     return total
   }
