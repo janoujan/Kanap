@@ -1,4 +1,4 @@
-![](kanap\front\images\logo.png)
+![](/front/images/banniere.png)
 # Openclassrooms Web developper training: project n°5: Kanap
 
  ### Build a commercial site with JS
