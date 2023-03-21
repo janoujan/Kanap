@@ -53,9 +53,9 @@ A little later, Frank sends you an e-mail to give you some additional details ab
 --------------------------------------------------------------------------------------------------------------
      
 
-From: Frank  
-To: you  
-Object: Static models of the Kanap site  
+     From: Frank  
+     To: you  
+     Object: Static models of the Kanap site  
 
      Hi,  
 
