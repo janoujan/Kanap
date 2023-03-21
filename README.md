@@ -79,21 +79,10 @@ A little later, Frank sends you an e-mail to give you some additional details ab
 -------------------------------------------------------------------------------------------------------------
 
 That's it, you have all the information to start your project. Good luck !    
-### Scpécifications
+## Scpécifications
 
 [the technical and functional specifications](/kanap/DW%2BP5%2B-%2BSpecifications%2Bfonctionnelles.pdf)
 
-
-## What I learned
-
-Create a test plan for an application
-Validate data from external sources
-Interact with a web service with JavaScript
-Handle JavaScript events 
-
-
-
-===========================================================
 
 ### Back end Prerequisites ###
 
@@ -106,3 +95,10 @@ can then run the server with `node server`.
 The server should run on `localhost` with default port `3000`. If the
 server runs on another port for any reason, this is printed to the
 console when the server starts, e.g. `Listening on port 3001`.
+
+## What I learned
+
+Create a test plan for an application  
+Validate data from external sources  
+Interact with a web service with JavaScript  
+Handle JavaScript events   
