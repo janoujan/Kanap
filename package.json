@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/janoujan/kanap/issues"
   },
-  "homepage": "https://github.com/janoujan/kanap#readme",
+  "homepage": "/front/html/index.html",
   "devDependencies": {
     "eslint": "^8.28.0",
     "eslint-config-standard": "^17.0.0",
