@@ -46,9 +46,11 @@ Corinne sends you an e-mail to brief you on the mission:
      Good day,  
 
      Corinne  
-[repo](https://github.com/OpenClassrooms-Student-Center/P5-Dev-Web-Kanap)      
-[this template](/DW%2BP5%2B-%2BModele%2Bplan%2Btests%2Bacceptation(1).xlsx)        
-[the technical and functional specifications](/DW%2BP5%2B-%2BModele%2Bplan%2Btests%2Bacceptation(1).xlsx)   
+    
+####  [repo](https://github.com/OpenClassrooms-Student-Center/P5-Dev-Web-Kanap)  
+      
+####  [template](/DW%2BP5%2B-%2BModele%2Bplan%2Btests%2Bacceptation(1).xlsx)
+####  [technical and functional specifications](/DW%2BP5%2B-%2BModele%2Bplan%2Btests%2Bacceptation(1).xlsx)   
 -----------------------------------------------------------------------------------------------------------
 
 A little later, Frank sends you an e-mail to give you some additional details about his work:
