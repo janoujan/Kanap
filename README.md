@@ -35,13 +35,10 @@ Corinne sends you an e-mail to brief you on the mission:
      Here are the different tasks you will have to carry out:  
 
          Unify the work already done by the team by dynamically integrating API elements into the different web pages with JavaScript.  
-         Front-end and API code is available on this repo
-[repo](https://github.com/OpenClassrooms-Student-Center/P5-Dev-Web-Kanap)    
-     Set up an acceptance test plan from this template
-[this template](/DW%2BP5%2B-%2BModele%2Bplan%2Btests%2Bacceptation(1).xlsx) that we usually use.     
+         Front-end and API code is available on the repo   
+         Set up an acceptance test plan from the template
 
-     For more details, here are
-[the technical and functional specifications](/DW%2BP5%2B-%2BModele%2Bplan%2Btests%2Bacceptation(1).xlsx)
+     For more details, look at technical and functional specifications  
      You can find all the details of it, the expectations for each page of the website and the details of the API.  
 
      Don't hesitate to come and see me if you have any questions, my door is always open.  
@@ -49,6 +46,9 @@ Corinne sends you an e-mail to brief you on the mission:
      Good day,  
 
      Corinne  
+[repo](https://github.com/OpenClassrooms-Student-Center/P5-Dev-Web-Kanap)      
+[this template](/DW%2BP5%2B-%2BModele%2Bplan%2Btests%2Bacceptation(1).xlsx)        
+[the technical and functional specifications](/DW%2BP5%2B-%2BModele%2Bplan%2Btests%2Bacceptation(1).xlsx)   
 -----------------------------------------------------------------------------------------------------------
 
 A little later, Frank sends you an e-mail to give you some additional details about his work:
